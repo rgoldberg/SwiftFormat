@@ -881,6 +881,7 @@ let commandLineArguments = [
     "verbose",
     "quiet",
     "unknown-rules",
+    "relative-paths",
     "reporter",
     "report",
     // Misc

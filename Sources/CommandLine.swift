@@ -220,6 +220,7 @@ func printHelp(as type: CLI.OutputType) {
     --lint             Return an error for unformatted input, and list violations
     --report           Path to a file where --lint output should be written
     --reporter         Report format: \(Reporters.help)
+    --relative-paths   Display file paths relative to the current working directory
     --lenient          Suppress errors for unformatted code in --lint mode
     --strict           Emit errors for unformatted code when formatting
     --verbose          Display detailed formatting output and warnings/errors
@@ -408,6 +409,7 @@ func processArguments(_ args: [String], environment: [String: String] = [:], in 
     var verbose = false
     var lenient = false
     var strict = false
+    var relativePathBaseURL = URL?.none
 
     quietMode = false
     defer {
@@ -439,6 +441,9 @@ func processArguments(_ args: [String], environment: [String: String] = [:], in 
 
         // Whether or not to output tokens instead of source code
         let printTokens = args["output-tokens"] != nil
+
+        // Relative Paths
+        relativePathBaseURL = args["relative-paths"].map { URL(fileURLWithPath: directory, isDirectory: true) }
 
         // Warnings
         for warning in warningsForArguments(args) {
@@ -621,6 +626,7 @@ func processArguments(_ args: [String], environment: [String: String] = [:], in 
         try addInputPaths(for: "lenient")
         try addInputPaths(for: "strict")
         try addInputPaths(for: "dry-run")
+        try addInputPaths(for: "relative-paths")
         try addInputPaths(for: "lint")
         try addInputPaths(for: "infer-options")
 

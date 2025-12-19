@@ -320,7 +320,14 @@ public final class Formatter: NSObject {
         }
 
         public func description(asError: Bool) -> String {
-            "\(filePath ?? ""):\(line):1: \(asError ? "error" : "warning"): (\(rule.name)) \(help)"
+            """
+            \(
+                filePath.map {
+                    URL(fileURLWithPath: $0, isDirectory: false, relativeTo: relativePathBaseURL).relativePath
+                }
+                ?? ""
+            ):\(line):1: \(asError ? "error" : "warning"): (\(rule.name)) \(help)
+            """
         }
     }
 
